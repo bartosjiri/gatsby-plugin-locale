@@ -1,3 +1,4 @@
-import LocaleWrapper from './src/util/locale/LocaleWrapper'
+const React = require('react')
+const {LocalesContextProvider} = require('./src/context/LocalesContextProvider')
 
-export const wrapRootElement = LocaleWrapper
+exports.wrapRootElement = ({element}) => <LocalesContextProvider>{element}</LocalesContextProvider>

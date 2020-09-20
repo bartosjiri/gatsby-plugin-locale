@@ -1,3 +1,7 @@
-import LocaleWrapper from './src/util/locale/LocaleWrapper'
+import React from 'react'
+import LocalesContextProvider from './src/context/LocalesContextProvider'
 
-export const wrapRootElement = LocaleWrapper
+// eslint-disable-next-line import/prefer-default-export
+export const wrapRootElement = ({element}) => (
+  <LocalesContextProvider>{element}</LocalesContextProvider>
+)
