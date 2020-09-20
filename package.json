@@ -1,0 +1,37 @@
+{
+  "name": "gatsby-plugin-locales",
+  "description": "A Gatsby localization plugin",
+  "version": "0.1.0",
+  "author": "Jiri Bartos <hi@bartosjiri.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/bartosjiri/gatsby-plugin-locales",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bartosjiri/gatsby-plugin-locales"
+  },
+  "bugs": {
+    "url": "https://github.com/bartosjiri/gatsby-plugin-locales"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "gatsby-plugin-locales",
+    "i18n",
+    "locales"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --out-dir . --ignore **/__tests__",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__"
+  },
+  "dependencies": {
+    "fast-glob": "^3.2.4",
+    "gray-matter": "^4.0.2",
+    "prop-types": "^15.7.2"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "gatsby": "^2.24.0"
+  }
+}
