@@ -10,7 +10,10 @@ exports.createPages = async ({actions, reporter}, pluginOptions) => {
     defaultLocale, generalFolder, pagesFolder, logGeneratedPages
   } = pluginOptions
 
-  let availableLocales = {}
+  let availableLocales = {
+    locales: {},
+    pages: {}
+  }
 
   // Normalize folder paths
   const normGeneralFolder = generalFolder.replace(/\\/g, '/').replace(/\/+$/, '')
@@ -67,10 +70,6 @@ exports.createPages = async ({actions, reporter}, pluginOptions) => {
             }
           }
         }
-      }
-
-      availableLocales.pages[page][locale] = {
-        frontmatter: {...parsedFileData.data}
       }
     })
   }
