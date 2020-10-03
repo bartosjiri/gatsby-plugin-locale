@@ -1,0 +1,59 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "arrow-parens": "off",
+    "block-spacing": "off",
+    "comma-dangle": "off",
+    "import/no-dynamic-require": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "linebreak-style": "off",
+    "max-len": "warn",
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": "off",
+    "object-curly-spacing": "off",
+    "react/jsx-closing-tag-location": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/jsx-fragments": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/require-default-props": "off",
+    "semi": [
+      2,
+      "never"
+    ]
+  }
+}
