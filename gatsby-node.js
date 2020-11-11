@@ -18,6 +18,13 @@ exports.onCreatePage = async ({page, actions, reporter}, pluginOptions) => {
   const normGeneralFolder = generalFolder.replace(/\\/g, '/').replace(/\/+$/, '')
   const normPagesFolder = pagesFolder.replace(/\\/g, '/').replace(/\/+$/, '')
 
+  // Get page slug
+  let pageSlug = '/'
+  // @TODO: Handle "index" and other special slugs
+  if (page.path.length > 1) {
+    pageSlug = page.path.replace(/(^\/)|(\/$)/g, '')
+  }
+
   // Import general locales
   const populateGeneralLocales = async () => {
     const generalFiles = await fg([`${normGeneralFolder}/*.json`])
@@ -41,21 +48,18 @@ exports.onCreatePage = async ({page, actions, reporter}, pluginOptions) => {
       }
     }
 
-    // @DEBUG
-    // console.log('generalLocales: ', generalLocales)
-
     return generalLocales
   }
 
   // Import page locales
-  const populatePagesLocales = async () => {
-    // @TODO: Load only locales for the given page
-    const pagesFiles = await fg([`${normPagesFolder}/**/*.md`])
+  const populatePageLocales = async () => {
+    // @TODO: Handle "index" and other special slugs
+    const pageFiles = await fg([`${normPagesFolder}/${pageSlug}/*.md`])
 
-    let pagesLocales = {}
+    let pageLocales = {}
 
-    if (pagesFiles.length > 0) {
-      for (const filePath of pagesFiles) {
+    if (pageFiles.length > 0) {
+      for (const filePath of pageFiles) {
         const fileData = await fs.readFile(filePath, 'utf8', (err, data) => {
           if (err) {
             reporter.panicOnBuild(`[gatsby-plugin-locales] Error while reading file "${filePath}".`)
@@ -66,49 +70,31 @@ exports.onCreatePage = async ({page, actions, reporter}, pluginOptions) => {
         // eslint-disable-next-line no-useless-escape
         const pageRegex = `(${normPagesFolder.replace('/', '\/')}\/)|(.md)`
         const pagePath = filePath.replace(new RegExp(pageRegex, 'g'), '')
-        const pageName = pagePath.substring(0, pagePath.lastIndexOf('/'))
         const locale = pagePath.substring(pagePath.lastIndexOf('/') + 1, pagePath.length)
 
         const parsedFileData = matter(fileData)
 
-        pagesLocales = {
-          ...pagesLocales,
-          [pageName]: {
-            ...pagesLocales[pageName],
-            [locale]: {
-              frontmatter: {
-                ...parsedFileData.data
-              }
+        pageLocales = {
+          ...pageLocales,
+          [locale]: {
+            frontmatter: {
+              ...parsedFileData.data
             }
           }
         }
       }
     }
 
-    // @DEBUG
-    // console.log('pagesLocales: ', pagesLocales)
-
-    return pagesLocales
+    return pageLocales
   }
 
-  const compileLocales = async (generalLocales, pagesLocales) => ({
-    locales: {...generalLocales},
-    pages: {...pagesLocales}
-  })
-
-  const generateLocalizedPages = async (availableLocales) => {
-    const availableLocalesList = Object.keys(availableLocales.locales)
+  // Generate localized pages
+  const generateLocalizedPages = async (generalLocales, pageLocales) => {
+    const availableLocalesList = Object.keys(generalLocales)
 
     if (availableLocalesList.length > 0) {
       for (const locale of availableLocalesList) {
-        let pageSlug = '/'
-        // @TODO: Handle "index" slug
-        if (page.path.length > 1) {
-          pageSlug = page.path.replace(/(^\/)|(\/$)/g, '')
-        }
-
-        const pageLocales = availableLocales.pages[pageSlug]
-        if (!pageLocales) {
+        if (Object.keys(pageLocales).length === 0) {
           return
         }
 
@@ -121,12 +107,13 @@ exports.onCreatePage = async ({page, actions, reporter}, pluginOptions) => {
             ...page.context,
             locales: {
               locale,
-              general: availableLocales.locales,
+              general: generalLocales,
               page: pageLocales
             }
           }
         }
 
+        // @TODO: Add option to keep (and redirect) the original page
         deletePage(page)
         createPage(localizedPage)
       }
@@ -134,11 +121,6 @@ exports.onCreatePage = async ({page, actions, reporter}, pluginOptions) => {
   }
 
   const generalLocales = await populateGeneralLocales()
-  const pagesLocales = await populatePagesLocales()
-  const availableLocales = await compileLocales(generalLocales, pagesLocales)
-
-  // @DEBUG:
-  // console.log('availableLocales: ', availableLocales)
-
-  await generateLocalizedPages(availableLocales)
+  const pageLocales = await populatePageLocales()
+  await generateLocalizedPages(generalLocales, pageLocales)
 }
