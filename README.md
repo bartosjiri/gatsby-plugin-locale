@@ -41,7 +41,7 @@ Also, please, feel free to improve the plugin through questions, suggestions and
         ]
       }
       ```
-    - **Description:**
+    - **Configuration:**
     	- List all languages available for your project in the `locales` array.
     	- Set default language in the `defaultLocale`, which will be used as a fallback language and other things.
     	- Define a folder location for general langauge resource files (used in step 3).
@@ -90,7 +90,7 @@ Also, please, feel free to improve the plugin through questions, suggestions and
       import React from 'react'
 
       const PageOne = ({pageContext}) => {
-      	  const {locales} = pageContext
+          const {locales} = pageContext
           const availableLanguages = Object.keys(locales.general).map(lang => locales[lang].name).join(", ")
 
         return (
