@@ -91,7 +91,7 @@ Also, please, feel free to improve the plugin through questions, suggestions and
 
       const PageOne = ({pageContext}) => {
           const {locales} = pageContext
-          const availableLanguages = Object.keys(locales.general).map(lang => locales[lang].name).join(", ")
+          const availableLanguages = Object.keys(locales.general).map(lang => locales.general[lang].name).join(", ")
 
         return (
           <div>
