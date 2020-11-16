@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-locales",
-  "description": "A Gatsby localization plugin",
+  "description": "A Gatsby internationalization plugin",
   "version": "0.1.0",
   "author": "Jiri Bartos <hi@bartosjiri.com>",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "url": "https://github.com/bartosjiri/gatsby-plugin-locales"
   },
   "bugs": {
-    "url": "https://github.com/bartosjiri/gatsby-plugin-locales"
+    "url": "https://github.com/bartosjiri/gatsby-plugin-locales/issues"
   },
   "keywords": [
     "gatsby",
