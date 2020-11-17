@@ -79,7 +79,8 @@ exports.onCreatePage = async ({page, actions, reporter}, pluginOptions) => {
           [locale]: {
             frontmatter: {
               ...parsedFileData.data
-            }
+            },
+            content: parsedFileData.content
           }
         }
       }
@@ -108,7 +109,8 @@ exports.onCreatePage = async ({page, actions, reporter}, pluginOptions) => {
             locales: {
               locale,
               general: generalLocales,
-              page: pageLocales
+              page: pageLocales,
+              links: "@TODO"
             }
           }
         }
